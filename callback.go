@@ -6,7 +6,9 @@ package vlc
 //#include <vlc/vlc.h>
 //typedef const struct libvlc_event_t clibvlc_event_t;
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+)
 
 //export goCallback
 func goCallback(e *C.clibvlc_event_t, userData unsafe.Pointer) {
@@ -18,7 +20,7 @@ func goCallback(e *C.clibvlc_event_t, userData unsafe.Pointer) {
 
 	event := &Event{
 		Type:   EventType(e._type),
-		target: nil, // TODO
+		Target: ectx.eventSource,
 	}
 	// event.desc.Write(e.u[:])
 

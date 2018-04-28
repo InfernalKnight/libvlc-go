@@ -102,7 +102,7 @@ const (
 
 type Event struct {
 	Type   EventType     // Event type
-	target interface{}   // object emitting the event
+	Target interface{}   // object emitting the event
 	desc   *bytes.Buffer // event descriptor
 }
 

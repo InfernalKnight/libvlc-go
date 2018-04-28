@@ -20,10 +20,11 @@ import (
 type Callback func(*Event, interface{})
 
 type eventContext struct {
-	token    int
-	et       C.libvlc_event_type_t
-	call     Callback
-	userData interface{}
+	token       int
+	et          C.libvlc_event_type_t
+	call        Callback
+	userData    interface{}
+	eventSource interface{}
 }
 
 var (
@@ -34,19 +35,23 @@ var (
 
 type EventManager struct {
 	event_manager *C.libvlc_event_manager_t
+	event_source  interface{}
 }
 
-func NewEventManager(event_manager *C.libvlc_event_manager_t) *EventManager {
+func NewEventManager(event_manager *C.libvlc_event_manager_t, event_source interface{}) *EventManager {
 	return &EventManager{
 		event_manager: event_manager,
+		event_source:  event_source,
 	}
 }
 
 func (em *EventManager) Attach(eventType EventType, callback Callback, userData interface{}) (int, error) {
+	log.Println("Enterring Attach")
 	ectx := &eventContext{
-		et:       C.libvlc_event_type_t(eventType),
-		call:     callback,
-		userData: userData,
+		et:          C.libvlc_event_type_t(eventType),
+		call:        callback,
+		userData:    userData,
+		eventSource: em.event_source,
 	}
 	handleLock.Lock()
 	handleToken++

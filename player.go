@@ -293,5 +293,5 @@ func (p *Player) EventManager() (*EventManager, error) {
 		return nil, errors.New("A player must be initialized first")
 	}
 
-	return NewEventManager(C.libvlc_media_player_event_manager(p.player)), nil
+	return NewEventManager(C.libvlc_media_player_event_manager(p.player), p), nil
 }

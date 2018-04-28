@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	vlc "github.com/tarrsalah/libvlc-go"
+	vlc "github.com/InfernalKnight/libvlc-go"
 )
 
 func main() {
@@ -53,8 +53,15 @@ func main() {
 	}
 
 	callback := func(event *vlc.Event, userData interface{}) {
-		log.Println(userData)
+		if f, ok := event.Target.(*vlc.Player); !ok {
+
+		} else {
+			f.SetFullScreen(true)
+		}
+		log.Println("My callback")
 	}
+
+	log.Println("Setting up the callback")
 	eventManager.Attach(vlc.MediaPlayerPaused, callback, "userData passed to the callback")
 	time.Sleep(2 * time.Second)
 	player.TogglePause()
